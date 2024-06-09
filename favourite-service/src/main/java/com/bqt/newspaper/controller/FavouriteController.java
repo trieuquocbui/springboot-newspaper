@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/favourite/")
 @RequiredArgsConstructor
@@ -28,7 +30,15 @@ public class FavouriteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
-    @GetMapping("{username}")
+    @GetMapping("{username}/all")
+    public ResponseEntity<ApiResponse<List<FavouriteResponse>>> getAllFavouriteOfUser(
+            @PathVariable("username") String username) {
+        List<FavouriteResponse> list = favouriteService.getAllFavouriteOfUser(username);
+        ApiResponse apiResponse = new ApiResponse<List<FavouriteResponse>>(GlobalCode.SUCCESS,"Lấy thành công",list);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
+    @GetMapping("{username}/list")
     public ResponseEntity<ApiResponse<PaginationResponse<FavouriteResponse>>> saveFavouriteNewspaper(
             @RequestParam(name = "page", defaultValue = PaginationConstant.DEFAULT_PAGE) int page,
             @RequestParam(name = "limit", defaultValue = PaginationConstant.DEFAULT_LIMIT) int limit,

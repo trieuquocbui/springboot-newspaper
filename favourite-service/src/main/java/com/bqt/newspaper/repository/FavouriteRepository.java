@@ -4,8 +4,10 @@ import com.bqt.newspaper.entity.Favourite;
 import com.bqt.newspaper.entity.Newspaper;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FavouriteRepository extends MongoRepository<Favourite, String> {
     Optional<Favourite> findByUsernameAndNewspaper(String username, Newspaper newspaperResponse);
+    List<Favourite> findAllByUsername(String username);
 }
