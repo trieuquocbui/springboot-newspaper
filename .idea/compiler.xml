@@ -11,6 +11,7 @@
         <module name="discovery-server" />
         <module name="newspaper-service" />
         <module name="api-gateway" />
+        <module name="favourite-service" />
         <module name="user-service" />
         <module name="file-service" />
         <module name="notification-service" />
@@ -28,6 +29,7 @@
       <module name="auth-service" options="-parameters" />
       <module name="auth_service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
+      <module name="favourite-service" options="-parameters" />
       <module name="file-service" options="-parameters" />
       <module name="newspaper-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
