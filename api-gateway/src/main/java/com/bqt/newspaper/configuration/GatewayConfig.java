@@ -27,7 +27,8 @@ public class GatewayConfig {
                 .route("favourite-service", r -> r.path(
                         "/api/v1/favourite/{username}/add/newspaper/{newspaperId}",
                                 "/api/v1/favourite/{username}/delete/newspaper/{newspaperId}",
-                                "/api/v1/favourite/{username}"
+                                "/api/v1/favourite/{username}/list",
+                                "/api/v1/favourite/{username}/all"
                         ).and()
                         .method(HttpMethod.GET,HttpMethod.POST,HttpMethod.DELETE,HttpMethod.PUT)
                         .filters(f -> f.filter(jwtUserAuthenticationFilter))
