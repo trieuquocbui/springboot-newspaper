@@ -18,13 +18,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         ApiResponse<User> apiResponse = userClient.getUser(username).getBody();
         User user = new User();
         if(apiResponse.getCode().equals(GlobalCode.SUCCESS)){
             user = apiResponse.getData();
         }
-
         return new CustomUserDetails(user);
     }
 }

@@ -9,18 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NewsPaperGlobalException.class)
-    public ResponseEntity<ErrorResponse> handlerBadRequestException(NewsPaperGlobalException newsPaperGlobalException) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+    public ResponseEntity<ErrorResponse> handlerException(NewsPaperGlobalException newsPaperGlobalException) {
+        return ResponseEntity.status(newsPaperGlobalException.getHttpStatus()).body(
                 ErrorResponse.builder()
                 .code(newsPaperGlobalException.getCode())
                 .message(newsPaperGlobalException.getMessage()).build()
         );
     }
-
-//    @ExceptionHandler(Exception.class)
-//    protected ResponseEntity<ApiResponse<String>> handleException(Exception e, Locale locale) {
-//        ApiResponse<String> apiResponse = new ApiResponse<>("1000",e.getMessage(),null);
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
-//    }
-
 }

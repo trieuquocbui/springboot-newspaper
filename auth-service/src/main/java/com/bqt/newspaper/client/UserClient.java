@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-//@FeignClient(name = "user", url = "http://api-gateway:9191/api/v1/user/", configuration = CustomFeignClientConfiguration.class)
-@FeignClient(name = "user", url = "http://localhost:9191/api/v1/user/", configuration = CustomFeignClientConfiguration.class)
+@FeignClient(name = "identity", url = "${USER_SERVICE_URL}", configuration = CustomFeignClientConfiguration.class)
 public interface UserClient {
 
     @GetMapping("{username}")

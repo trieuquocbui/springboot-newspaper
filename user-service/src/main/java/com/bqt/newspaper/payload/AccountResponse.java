@@ -7,4 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class AccountResponse {
     private String username;
+    private String fullName;
 }

@@ -13,7 +13,7 @@ public class JwtHelper {
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
     // Annotation @Value used on property of class, has task get info from file properties and assign variable
-    @Value("${buiquoctrieu.app.jwtSecret}")
+    @Value("${app.jwtSecret}")
     private String jwtSecret;
 
     public Claims getClaims(String token) {
@@ -23,7 +23,6 @@ public class JwtHelper {
     // check token
     public boolean validateJwtToken(String authToken) {
         try {
-
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException e) {

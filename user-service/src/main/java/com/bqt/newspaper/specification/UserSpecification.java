@@ -14,7 +14,6 @@ public class UserSpecification implements Specification<User> {
 
     private SearchCriteria searchCriteria;
 
-
     @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         Predicate predicate = criteriaBuilder.conjunction();
@@ -23,7 +22,7 @@ public class UserSpecification implements Specification<User> {
             predicate = criteriaBuilder.and(predicate,criteriaBuilder.like(root.get(PaginationConstant.USERNAME), "%" + searchCriteria.getSearch() + "%"));
         }
         Join<User, Role> roleJoin = root.join("role");
-        predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(roleJoin.get("roleId"), PaginationConstant.USER_ROLE));
+        predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(roleJoin.get("id"), PaginationConstant.USER_ROLE));
 
         return predicate;
     }

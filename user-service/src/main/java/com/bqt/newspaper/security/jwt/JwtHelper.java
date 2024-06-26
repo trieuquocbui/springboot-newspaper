@@ -34,7 +34,6 @@ public class JwtHelper {
 
         // create token
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
                 .claim("roles",roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
@@ -42,8 +41,8 @@ public class JwtHelper {
                 .compact();
     }
 
-    public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    public Claims getUserNameFromJwtToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
     }
 
     // check token

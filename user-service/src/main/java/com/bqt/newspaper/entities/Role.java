@@ -1,10 +1,7 @@
 package com.bqt.newspaper.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
+@Builder
 public class Role {
 
     @Id
-    @Column(name = "role_id", nullable = false, length = 10)
-    private String roleId;
+    @Column(nullable = false, length = 10)
+    private String id;
 
-    @Column(name = "name", nullable = false, length = 25)
+    @Column(nullable = false, length = 25)
     private String name;
 
     @OneToMany(mappedBy = "role")

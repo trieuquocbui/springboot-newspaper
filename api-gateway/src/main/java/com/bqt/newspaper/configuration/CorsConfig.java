@@ -17,15 +17,12 @@ public class CorsConfig extends CorsConfiguration {
     public CorsWebFilter corsFilter()
     {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials( true );
-        config.setAllowedOrigins( List.of( "http://localhost:4200" ) );
-        config.setAllowedMethods( List.of( "GET", "POST", "PUT", "DELETE") );
-//        "origin", "content-type", "accept", "authorization", "cookie"
-        config.setAllowedHeaders( List.of("*" ) );
-
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration( "/**", config );
-
-        return new CorsWebFilter( source );
+        source.registerCorsConfiguration("/**", config);
+        return new CorsWebFilter(source);
     }
 }

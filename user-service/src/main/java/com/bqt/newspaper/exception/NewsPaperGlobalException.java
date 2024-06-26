@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
@@ -12,8 +13,5 @@ import lombok.Setter;
 public class NewsPaperGlobalException extends RuntimeException{
     private String code;
     private String message;
-
-    public NewsPaperGlobalException(String message) {
-        super(message);
-    }
+    private HttpStatus httpStatus;
 }

@@ -1,5 +1,6 @@
 package com.bqt.newspaper.configuration;
 
+import com.bqt.newspaper.exception.ErrorResponse;
 import com.bqt.newspaper.exception.NewsPaperGlobalException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +8,7 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,41 +17,24 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class CustomFeignErrorDecoder implements ErrorDecoder {
 
+    private final ErrorDecoder defaultErrorDecoder = new Default();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public Exception decode(String s, Response response) {
 
-        NewsPaperGlobalException newsPaperGlobalException = extractNewsPaperGlobalException(response);
-
-        switch (response.status()){
-            case 400:
-                return newsPaperGlobalException;
-            default:
-                return new Exception("Common Feign Exception");
-        }
+        return extractNewsPaperGlobalException(response);
     }
 
     private NewsPaperGlobalException extractNewsPaperGlobalException(Response response) {
-        NewsPaperGlobalException exceptionMessage = null;
-        Reader reader = null;
-        //capturing error message from response body.
+
         try {
-            reader = response.body().asReader(StandardCharsets.UTF_8);
-            String result = IOUtils.toString(reader);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            exceptionMessage = mapper.readValue(result,
-                    NewsPaperGlobalException.class);
+            NewsPaperGlobalException newsPaperGlobalException = objectMapper.readValue(response.body().asInputStream(), NewsPaperGlobalException.class);
+            newsPaperGlobalException.setHttpStatus(HttpStatus.valueOf(response.status()));
+            return newsPaperGlobalException;
         } catch (IOException e) {
-            log.error("IO Exception on reading exception message feign client" + e);
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                log.error("IO Exception on reading exception message feign client" + e);
-            }
+            throw new RuntimeException(e.getMessage());
         }
-        return exceptionMessage;
+
     }
 }

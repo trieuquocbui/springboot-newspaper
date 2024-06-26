@@ -1,13 +1,10 @@
 package com.bqt.newspaper.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
 
 @Entity
 @Getter
@@ -17,21 +14,24 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @Table
+@Builder
 public class User {
-
     @Id
-    @Column(name = "username", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false, length = 60)
     private String password;
 
-    @Column(name = "fullName", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String fullName;
 
-    @Column(name = "thumbnail", length = 64)
-    private String thumbnail = "peaa3cc2f6-51c8-47bb-a1ad-21d8f3a939b1";
+    @Column(length = 64)
+    private String thumbnail;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(nullable = false,length = 20)
+    private SocialProvider socialProvider;
+
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     private Role role;
 }

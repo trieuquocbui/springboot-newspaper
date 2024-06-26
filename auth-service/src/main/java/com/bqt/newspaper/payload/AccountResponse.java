@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountResponse {
-    private Long id;
     private String username;
+    private String fullName;
 }

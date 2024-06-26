@@ -178,14 +178,12 @@ public class NewspaperService implements INewspaperService {
             newspaper.setOrigin(origin.getName());
         }
 
-
         List<String> thumbnails = newspaperRequest.getParagraphs().stream()
                 .filter(paragraph -> paragraph.getThumbnail() != null)
                 .map(paragraph -> paragraph.getThumbnail()).collect(Collectors.toList());
 
-
         List<String> removeThumbnails = new ArrayList<>();
-        for (Paragraph paragraph: newspaper .getParagraphs()){
+        for (Paragraph paragraph: newspaper.getParagraphs()){
             if(paragraph.getThumbnail() != null && !thumbnails.contains(paragraph.getThumbnail())){
                 removeThumbnails.add(paragraph.getThumbnail());
             }

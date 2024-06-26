@@ -62,21 +62,21 @@ public class GatewayConfig {
                         .method(HttpMethod.POST)
                         .uri("lb://auth-service"))
                 .route("admin-user-service", r -> r.path(
-                        "/api/v1/user/list"
+                        "/api/v1/identity/list"
                         ).and()
                         .method(HttpMethod.GET)
                         .filters(f -> f.filter(jwtAdminAuthenticationFilter))
                         .uri("lb://user-service"))
                 .route("user-service", r -> r.path(
-                                "/api/v1/user/edit/{username}"
+                                "/api/v1/identity/edit/{username}"
                         ).and()
                         .method(HttpMethod.PUT)
                         .filters(f -> f.filter(jwtAuthenticationFilter))
                         .uri("lb://user-service"))
                 .route("public-user-service", r -> r.path(
-                                "/api/v1/user/{username}",
-                                "/api/v1/user/profile/{username}",
-                                "/api/v1/user/register").and()
+                                "/api/v1/identity/{username}",
+                                "/api/v1/identity/profile/{username}",
+                                "/api/v1/identity/register").and()
                         .method(HttpMethod.POST,HttpMethod.GET)
                         .uri("lb://user-service"))
                 .route("public-newspaper-service", r -> r.path(

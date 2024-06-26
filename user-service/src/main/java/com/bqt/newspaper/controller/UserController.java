@@ -7,17 +7,20 @@ import com.bqt.newspaper.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user/")
+@RequestMapping("/api/v1/identity/")
 public class UserController {
 
     private final IUserService userService;
 
     @GetMapping("list")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<PaginationResponse<ProfileResponse>>> getUserList(
             @RequestParam(name = "page", defaultValue = PaginationConstant.DEFAULT_PAGE) int page,
             @RequestParam(name = "limit", defaultValue = PaginationConstant.DEFAULT_LIMIT) int limit,
@@ -53,6 +56,7 @@ public class UserController {
     }
 
     @PutMapping("edit/{username}")
+    @PreAuthorize("hasRole('ADMIN,'USER')")
     public ResponseEntity<ApiResponse<ProfileResponse>> editUser(
             @PathVariable(name = "username") String username,
             @RequestPart(name = "file",required = false)MultipartFile file,

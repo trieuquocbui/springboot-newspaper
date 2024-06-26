@@ -2,7 +2,6 @@ package com.bqt.newspaper.exception;
 
 public class GlobalCode {
     public static final String SUCCESS = "1000";
-
     public static final String FAIL = "2000";
     public static final String ERROR_ENTITY_NOT_FOUND = "3000";
     public static final String ERROR_ID_EXIST = "4000";

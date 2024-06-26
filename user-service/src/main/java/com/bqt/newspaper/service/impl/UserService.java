@@ -2,6 +2,7 @@ package com.bqt.newspaper.service.impl;
 
 import com.bqt.newspaper.client.FileClient;
 import com.bqt.newspaper.entities.Role;
+import com.bqt.newspaper.entities.SocialProvider;
 import com.bqt.newspaper.entities.User;
 import com.bqt.newspaper.event.FileEvent;
 import com.bqt.newspaper.exception.EntityAlreadyException;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +39,7 @@ public class UserService implements IUserService {
 
     private final FileEvent fileEvent;
     protected AccountResponse convertToAccountResponse(User user){
-        return new AccountResponse(user.getUsername());
+        return new AccountResponse(user.getUsername(),user.getFullName());
     }
 
     protected UserResponse convertToUserResponse(User user){
@@ -51,17 +53,18 @@ public class UserService implements IUserService {
     @Override
     public AccountResponse registerAccount(RegisterRequest registerRequest) {
         Role role = roleRepository.findById(registerRequest.getRole()).orElseThrow(
-                () -> new EntityNotFoundException("Chức vụ không tồn tại", GlobalCode.ERROR_ENTITY_NOT_FOUND));
+                () -> new EntityNotFoundException("Chức vụ không tồn tại", GlobalCode.ERROR_ENTITY_NOT_FOUND,HttpStatus.BAD_REQUEST));
 
         boolean checkUsername = userRepository.existsByUsername(registerRequest.getUsername());
 
         if(checkUsername){
-            throw new EntityAlreadyException("Tài khoản đã tồn tại",GlobalCode.ERROR_NAME_EXIST);
+            throw new EntityAlreadyException("Tài khoản đã tồn tại",GlobalCode.ERROR_NAME_EXIST,HttpStatus.BAD_REQUEST);
         }
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setFullName(registerRequest.getFullName());
         user.setPassword(registerRequest.getPassword());
+        user.setSocialProvider(SocialProvider.valueOf(registerRequest.getSocialProvider()));
         user.setRole(role);
         user = userRepository.save(user);
 
@@ -99,21 +102,21 @@ public class UserService implements IUserService {
     @Override
     public UserResponse getUser(String username) {
         User user = userRepository.findById(username).orElseThrow(
-                () -> new EntityNotFoundException("Không tìm thấy tài khoản",GlobalCode.ERROR_ENTITY_NOT_FOUND));
+                () -> new EntityNotFoundException("Không tìm thấy tài khoản",GlobalCode.ERROR_ENTITY_NOT_FOUND,HttpStatus.BAD_REQUEST));
         return convertToUserResponse(user);
     }
 
     @Override
     public ProfileResponse getProfile(String username) {
         User user = userRepository.findById(username).orElseThrow(
-                () -> new EntityNotFoundException("Không tìm thấy tài khoản",GlobalCode.ERROR_ENTITY_NOT_FOUND));
+                () -> new EntityNotFoundException("Không tìm thấy tài khoản",GlobalCode.ERROR_ENTITY_NOT_FOUND,HttpStatus.BAD_REQUEST));
         return convertToProfileResponse(user);
     }
 
     @Override
     public ProfileResponse editProfile(String username, String fullName, MultipartFile file) {
         User user = userRepository.findById(username).orElseThrow(
-                () -> new EntityNotFoundException("Không tìm thấy tài khoản",GlobalCode.ERROR_ENTITY_NOT_FOUND));
+                () -> new EntityNotFoundException("Không tìm thấy tài khoản",GlobalCode.ERROR_ENTITY_NOT_FOUND,HttpStatus.BAD_REQUEST));
 
         if(file != null){
             MultipartFile[] multipartFiles = new MultipartFile[1];
